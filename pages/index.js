@@ -61,9 +61,9 @@ const Home = () => {
     return (
         <div>
             <Head>
-                <title>Персонаж: { character.info.name }</title>
+                <title>Персонаж</title>
             </Head>
-            <h1>{ character.info.name }</h1>
+            <h1>Character Details</h1>
             {character && <RecursiveArrayRenderer data={character} />}
         </div>
     );
