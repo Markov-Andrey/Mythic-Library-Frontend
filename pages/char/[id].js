@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Head from 'next/head';
+import { useRouter } from "next/router";
+
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
 
 const RecursiveArrayRenderer = ({ data }) => {
@@ -42,22 +44,7 @@ const RecursiveArrayRenderer = ({ data }) => {
     );
 };
 
-const Home = () => {
-    const [character, setCharacter] = useState("");
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://mythic-library.com/api/character/1');
-                setCharacter(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching character:', error);
-            }
-        };
-        fetchData();
-    }, []);
-
+const CharacterDetails = ({ character }) => {
     return (
         <div>
             <Head>
@@ -69,4 +56,14 @@ const Home = () => {
     );
 };
 
-export default Home;
+export async function getServerSideProps(context) {
+    const { id } = context.query;
+    const response = await axios.get(`http://mythic-library.com/api/character/${id}`);
+    const character = response.data;
+
+    return {
+        props: { character },
+    };
+}
+
+export default CharacterDetails;
