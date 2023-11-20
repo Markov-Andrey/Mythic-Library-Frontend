@@ -45,6 +45,7 @@ const RecursiveArrayRenderer = ({ data }) => {
 };
 
 const CharacterDetails = ({ character }) => {
+    console.log(character);
     return (
         <div>
             <Head>
