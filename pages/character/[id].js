@@ -30,6 +30,17 @@ const CharacterPage = () => {
         fetchData();
     }, [id]);
 
+    const formatValue = (value, quantity) => {
+        const totalValue = value * quantity;
+        if (totalValue >= 1) {
+            return `${totalValue} зм`;
+        } else if (totalValue * 10 >= 1) {
+            return `${totalValue * 10} см`;
+        } else {
+            return `${totalValue * 100} мм`;
+        }
+    };
+
     const paramsData = () => {
         if (!character) return [];
         const param = character.params;
@@ -135,36 +146,84 @@ const CharacterPage = () => {
                         ))}
                     </section>
 
-                    <h2>Навыки:</h2>
-                    <table className="border-collapse">
-                        <tbody>
-                        {skillsData().map((param, index) => {
-                            const mod = param.modifier;
-                            const bonus = param.bonus * character.character_experience.master_bonus;
-                            const result = mod + bonus;
-                            const tooltip = `
+                    <section className={"flex gap-10"}>
+                        <div>
+                            <h2>Навыки:</h2>
+                            <hr/>
+                            <table className="border-collapse">
+                                <tbody>
+                                {skillsData().map((param, index) => {
+                                    const mod = param.modifier;
+                                    const bonus = param.bonus * character.character_experience.master_bonus;
+                                    const result = mod + bonus;
+                                    const tooltip = `
                                 Модификатор: ${Modifier(mod)}` + (bonus !== 0 ? `,
                                 Бонус мастерства: ${Modifier(bonus)}` : '');
-                            return (
-                                <tr key={index} className="border-b-2 hover:bg-blue-100 transition duration-300 ease-in-out">
-                                    <td className="p-1 text-left">
-                                        <svg width={'10px'} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5" fill={param.bonus ? "black" : "none"}  stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <circle cx="6" cy="2.5" r="2.5"/>
-                                        </svg>
-                                    </td>
-                                    <td className="p-1 text-left">
-                                        <span>{param.label}</span>
-                                    </td>
-                                    <td className="p-1 text-center cursor-help">
-                                        <Tooltip content={tooltip}>
-                                            {Modifier(result)}
+                                    return (
+                                        <tr key={index} className="border-b-2 hover:bg-blue-100 transition duration-300 ease-in-out">
+                                            <td className="p-1 text-left">
+                                                <svg width={'10px'} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5" fill={param.bonus ? "black" : "none"}  stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round">
+                                                    <circle cx="6" cy="2.5" r="2.5"/>
+                                                </svg>
+                                            </td>
+                                            <td className="p-1 text-left">
+                                                <span>{param.label}</span>
+                                            </td>
+                                            <td className="p-1 text-center cursor-help">
+                                                <Tooltip content={tooltip}>
+                                                    {Modifier(result)}
+                                                </Tooltip>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="border-2">
+                            <h2>Рюкзак:</h2>
+                            <hr/>
+                            {character.backpack.map((item, index) => (
+                                <div key={index}>
+                                    <div className={"flex gap-2"}>
+                                        {item.image && (
+                                            <Image
+                                                width={100}
+                                                height={100}
+                                                alt={item.id}
+                                                src={`${storage}${item.image}`}
+                                                className="rounded"
+                                            />
+                                        )}
+                                        <h3>{item.title}</h3>
+                                    </div>
+                                    <p className={"flex gap-2"}>
+                                        <b>Описание: </b>
+                                        {item.description}
+                                    </p>
+                                    <p className={"flex gap-2"}>
+                                        <b>Ценность (всего): </b>
+                                        <Tooltip content={`Цена за ед.: ${formatValue(item.value, 1)}`}>
+                                            <p className={"cursor-help"}>{formatValue(item.value, item.quantity)}</p>
                                         </Tooltip>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
+                                    </p>
+                                    <p className={"flex gap-2"}>
+                                        <b>Вес (всего): </b>
+                                        <Tooltip content={`Вес за ед.: ${item.weight} фунт`}>
+                                            <p className={"cursor-help"}>{item.weight * item.quantity} фунт</p>
+                                        </Tooltip>
+                                    </p>
+                                    <p>
+                                        <b>Количество: </b>
+                                        {item.quantity}
+                                    </p>
+                                    <hr/>
+                                </div>
+                            ))}
+                        </div>
+
+                    </section>
                 </div>
             ) : (
                 <div>Loading...</div>
