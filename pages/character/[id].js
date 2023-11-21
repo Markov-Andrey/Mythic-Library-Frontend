@@ -84,7 +84,7 @@ const CharacterPage = () => {
     return (
         <div>
             <Head>
-                <title>{character ? character.info.name : "Персонаж"}</title>
+                <title>{character ? `${character.info.name} (${character.character_experience.level} ур.)` : "Персонаж"}</title>
             </Head>
             {character ? (
                 <div className="p-5">
