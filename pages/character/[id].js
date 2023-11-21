@@ -181,46 +181,55 @@ const CharacterPage = () => {
                             </table>
                         </div>
 
-                        <div className="border-2">
+                        <div className="border-2 relative">
                             <h2>Рюкзак:</h2>
-                            <hr/>
-                            {character.backpack.map((item, index) => (
-                                <div key={index}>
-                                    <div className={"flex gap-2"}>
-                                        {item.image && (
-                                            <Image
-                                                width={100}
-                                                height={100}
-                                                alt={item.id}
-                                                src={`${storage}${item.image}`}
-                                                className="rounded"
-                                            />
-                                        )}
-                                        <h3>{item.title}</h3>
+                            <div>
+                                <hr/>
+                                {character.backpack.map((item, index) => (
+                                    <div key={index}>
+                                        <div className={"flex gap-2"}>
+                                            {item.image && (
+                                                <Image
+                                                    width={100}
+                                                    height={100}
+                                                    alt={item.id}
+                                                    src={`${storage}${item.image}`}
+                                                    className="rounded"
+                                                />
+                                            )}
+                                            <h3>{item.title}</h3>
+                                        </div>
+                                        <p className={"flex gap-2"}>
+                                            <b>Описание: </b>
+                                            {item.description}
+                                        </p>
+                                        <p className={"flex gap-2"}>
+                                            <b>Ценность (всего): </b>
+                                            <Tooltip content={`Цена за ед.: ${formatValue(item.value, 1)}`}>
+                                                <p className={"cursor-help"}>{formatValue(item.value, item.quantity)}</p>
+                                            </Tooltip>
+                                        </p>
+                                        <p className={"flex gap-2"}>
+                                            <b>Вес (всего): </b>
+                                            <Tooltip content={`Вес за ед.: ${item.weight} фунт`}>
+                                                <p className={"cursor-help"}>{item.weight * item.quantity} фунт</p>
+                                            </Tooltip>
+                                        </p>
+                                        <p>
+                                            <b>Количество: </b>
+                                            {item.quantity}
+                                        </p>
+                                        <hr/>
                                     </div>
-                                    <p className={"flex gap-2"}>
-                                        <b>Описание: </b>
-                                        {item.description}
+                                ))}
+                            </div>
+                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 border-2 p-1">
+                                <Tooltip content={"Вес/макс.вес"}>
+                                    <p className={"cursor-help"}>
+                                        {character.weight.backpack}/{character.weight.carrying} фунтов
                                     </p>
-                                    <p className={"flex gap-2"}>
-                                        <b>Ценность (всего): </b>
-                                        <Tooltip content={`Цена за ед.: ${formatValue(item.value, 1)}`}>
-                                            <p className={"cursor-help"}>{formatValue(item.value, item.quantity)}</p>
-                                        </Tooltip>
-                                    </p>
-                                    <p className={"flex gap-2"}>
-                                        <b>Вес (всего): </b>
-                                        <Tooltip content={`Вес за ед.: ${item.weight} фунт`}>
-                                            <p className={"cursor-help"}>{item.weight * item.quantity} фунт</p>
-                                        </Tooltip>
-                                    </p>
-                                    <p>
-                                        <b>Количество: </b>
-                                        {item.quantity}
-                                    </p>
-                                    <hr/>
-                                </div>
-                            ))}
+                                </Tooltip>
+                            </div>
                         </div>
 
                     </section>
