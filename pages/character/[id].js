@@ -181,7 +181,7 @@ const CharacterPage = () => {
                             </table>
                         </div>
 
-                        <div className="border-2 relative">
+                        <div className="border-2">
                             <h2>Рюкзак:</h2>
                             <div>
                                 <hr/>
@@ -223,7 +223,7 @@ const CharacterPage = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 border-2 p-1">
+                            <div className="border-2 p-1 flex items-center">
                                 <Tooltip content={"Вес/макс.вес"}>
                                     <p className={"cursor-help"}>
                                         {character.weight.backpack}/{character.weight.carrying} фунтов
