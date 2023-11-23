@@ -28,6 +28,18 @@ const CampaignPage = () => {
         fetchData();
     }, [id]);
 
+    const reload = async () => {
+        try {
+            if (id) {
+                const data = await getCampaign(id);
+                setCampaign(data);
+                console.log(data);
+            }
+        } catch (error) {
+            console.error('Error fetching campaign:', error);
+        }
+    };
+
     return (
         <div>
             <Head>
@@ -62,9 +74,29 @@ const CampaignPage = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Взаимодействие</h2>
+                        <h2>Заметки кампании</h2>
                         <div className={"flex flex-wrap"}>
-                            <AddNote campaignId={campaign.id} />
+                            <AddNote campaignId={campaign.id} onNoteCreated={reload} />
+                        </div>
+                        <div className="flex flex-wrap">
+                            {campaign.campaign_note.map((item) => (
+                                <div className={"m-2 border-2 flex flex-col gap-1 w-full"}>
+                                    <h3>{item.title}</h3>
+                                    <div className={"font-bold"}>{item.tags}</div>
+                                    <hr/>
+                                    <div>{item.description}</div>
+                                    <hr/>
+                                    <div>
+                                        {new Date(item.created_at).toLocaleString('ru-RU', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric'
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

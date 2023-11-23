@@ -44,3 +44,34 @@ export const getCampaign = async (id) => {
     throw error;
   }
 };
+
+// Campaign Notes
+export const createCampaignNote = async (data) => {
+  try {
+    const response = await api.post('/campaign-notes', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating campaign note:', error);
+    throw error;
+  }
+};
+
+export const updateCampaignNote = async (id, data) => {
+  try {
+    const response = await api.put(`/campaign-notes/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating campaign note:', error);
+    throw error;
+  }
+};
+
+export const deleteCampaignNote = async (id) => {
+  try {
+    const response = await api.delete(`/campaign-notes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting campaign note:', error);
+    throw error;
+  }
+};
