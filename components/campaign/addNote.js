@@ -31,7 +31,7 @@ const AddNote = ({ campaignId }) => {
                             </div>
                             <div className="flex items-center gap-2">
                                 <Checkbox id="remember"/>
-                                <Label htmlFor="remember">Заметка мастера</Label>
+                                <Label htmlFor="remember">Личная заметка</Label>
                             </div>
                         </div>
                     </Modal.Body>
