@@ -6,7 +6,7 @@ import {getCharacter} from 'api/index';
 import {Progress} from 'flowbite-react';
 import ParamElement from '/components/character/param';
 import ArmorClass from '/components/character/armor_class';
-import { Tooltip } from 'flowbite-react';
+import {Tooltip} from 'flowbite-react';
 import {Modifier} from '/services/modifier';
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
