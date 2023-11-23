@@ -184,6 +184,45 @@ const CharacterPage = () => {
                         <div className="border-2">
                             <h2>Рюкзак:</h2>
                             <div>
+                                <div className={"flex"}>
+                                    {character.backpack.map((item, index) => (
+                                        <div>
+                                            <Tooltip content={
+                                                <div className={"max-w-[500px]"}>
+                                                    <h4>{item.title}</h4>
+                                                    <hr/>
+                                                    <span className={"font-bold"}>Описание: </span>
+                                                    <span>{item.description}</span>
+                                                    <hr/>
+                                                    <span className={"font-bold"}>Ценность (Всего): </span>
+                                                    <span>{formatValue(item.value, item.quantity)}</span>
+                                                    <hr/>
+                                                    <span className={"font-bold"}>Вес (всего): </span>
+                                                    <span>{item.weight * item.quantity} фунт</span>
+                                                    <hr/>
+                                                    <span className={"font-bold"}>Количество: </span>
+                                                    <span>{item.quantity}</span>
+                                                </div>
+                                            }>
+                                                <div className={"relative"}>
+                                                    <Image
+                                                        width={100}
+                                                        height={100}
+                                                        style={{minHeight: '100px', minWidth: '100px', maxHeight: '100px', maxWidth: '100px', objectFit: 'cover'}}
+                                                        alt={item.id}
+                                                        src={ item.image ? `${storage}${item.image}` : '/images/mark.svg'}
+                                                        className="rounded"
+                                                    />
+                                                    <div className={"absolute bottom-0 right-0 bg-blue-300 w-[25px] h-[25px]"}>
+                                                        <p className={"flex items-center justify-center font-bold"}>
+                                                            {item.quantity}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </Tooltip>
+                                        </div>
+                                    ))}
+                                </div>
                                 <hr/>
                                 {character.backpack.map((item, index) => (
                                     <div key={index}>
