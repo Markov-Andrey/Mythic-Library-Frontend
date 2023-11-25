@@ -8,6 +8,7 @@ import ParamElement from '/components/character/param';
 import ArmorClass from '/components/character/armor_class';
 import Inspiration from '/components/character/inspiration';
 import MasteryBonus from '/components/character/mastery_bonus';
+import HealthBar from '/components/character/healthbar';
 import Backpack from '/components/character/backpack';
 import {Tooltip} from 'flowbite-react';
 import {Modifier} from '/services/modifier';
@@ -33,17 +34,6 @@ const CharacterPage = () => {
         };
         fetchData();
     }, [id]);
-
-    const formatValue = (value, quantity) => {
-        const totalValue = value * quantity;
-        if (totalValue >= 1) {
-            return `${totalValue} зм`;
-        } else if (totalValue * 10 >= 1) {
-            return `${totalValue * 10} см`;
-        } else {
-            return `${totalValue * 100} мм`;
-        }
-    };
 
     const paramsData = () => {
         if (!character) return [];
@@ -112,23 +102,21 @@ const CharacterPage = () => {
                                 </div>
                                 <h1>{character.info.name}</h1>
                             </span>
-                            <button className="w-fit flex items-center rounded-full border-2 border-neutral-300 pr-[20px] bg-blue-300 hover:drop-shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-                                <Image
-                                    width={40}
-                                    height={40}
-                                    alt={character.info.id}
-                                    src={`${storage}${character.class.icon}`}
-                                    className="rounded-full"
-                                />
-                                <span className="ml-2">{character.class.name}</span>
-                            </button>
-                            <div className={"flex flex-row gap-2 items-center"}>
+                            <div className={"flex flex-row gap-2"}>
                                 <ArmorClass className={"w-[50px]"} value={character.armor_class} />
-                                <div className="flex flex-col flex-grow">
-                                    <div className="text-base font-bold text-red-700">HP</div>
-                                    <Progress progress={character.health.health_current/character.health.health_max*100} size="lg" color="red" />
-                                    <span className={"text-red-700 font-medium"}>{character.health.health_current}/{character.health.health_max}</span>
+                                <div className="w-fit flex items-center rounded-full border-2 border-neutral-300 pr-[20px] bg-blue-300 hover:drop-shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                                    <Image
+                                        width={40}
+                                        height={40}
+                                        alt={character.info.id}
+                                        src={`${storage}${character.class.icon}`}
+                                        className="rounded-full"
+                                    />
+                                    <span className="ml-2">{character.class.name}</span>
                                 </div>
+                            </div>
+                            <div className="flex w-full min-w-max">
+                                <HealthBar health={character.health} />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col">
@@ -160,9 +148,6 @@ const CharacterPage = () => {
                                     const mod = param.modifier;
                                     const bonus = param.bonus * character.character_experience.master_bonus;
                                     const result = mod + bonus;
-                                    const tooltip = `
-                                Модификатор: ${Modifier(mod)}` + (bonus !== 0 ? `,
-                                Бонус мастерства: ${Modifier(bonus)}` : '');
                                     return (
                                         <tr key={index} className="border-b-2 hover:bg-blue-100 transition duration-300 ease-in-out">
                                             <td className="p-1 text-left">
@@ -174,7 +159,12 @@ const CharacterPage = () => {
                                                 <span>{param.label}</span>
                                             </td>
                                             <td className="p-1 text-center cursor-help">
-                                                <Tooltip content={tooltip}>
+                                                <Tooltip content={
+                                                    <div>
+                                                        <div>Модификатор: {Modifier(mod)}</div>
+                                                        {bonus !== 0 ? <div>Бонус мастерства: {Modifier(bonus)}</div> : null}
+                                                    </div>
+                                                }>
                                                     {Modifier(result)}
                                                 </Tooltip>
                                             </td>

@@ -16,13 +16,13 @@ const ArmorClass = ({value}) => {
         return {key: maxKey, value: maxValue};
     };
     const maxKeyValue = findMaxValue(value);
-    const tooltip = `Класс брони: ${maxKeyValue.key}`;
+    const tooltip = `Класс доспехов: ${maxKeyValue.key}`;
 
     return (
-        <div className={"relative cursor-help"}>
-            <Tooltip content={tooltip} className={"w-fit"}>
+        <div className={"relative"}>
+            <Tooltip content={tooltip} className={"w-fit min-w-[185px]"}>
                 <Shield/>
-                <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                <div className="cursor-help absolute left-0 top-0 w-full h-full flex items-center justify-center">
                     <h3>{maxKeyValue.value}</h3>
                 </div>
             </Tooltip>

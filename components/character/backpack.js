@@ -3,12 +3,20 @@ import { Tooltip } from "flowbite-react";
 import Image from "next/image";
 
 const formatValue = (value, quantity) => {
-    return value * quantity;
+    const totalValue = value * quantity;
+    if (totalValue >= 1) {
+        return `${totalValue} зм`;
+    } else if (totalValue * 10 >= 1) {
+        return `${totalValue * 10} см`;
+    } else {
+        return `${totalValue * 100} мм`;
+    }
 };
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
 
 const Backpack = ({ backpack, weight }) => {
+    console.log(backpack);
     return (
         <div className="border-2">
             <h2>Рюкзак:</h2>
@@ -20,6 +28,9 @@ const Backpack = ({ backpack, weight }) => {
                             content={
                                 <div className="max-w-[500px]">
                                     <h4>{item.title}</h4>
+                                    <hr />
+                                    <span className="font-bold">Тип: </span>
+                                    <span>{item.types ? item.types : '-'}</span>
                                     <hr />
                                     <span className="font-bold">Описание: </span>
                                     {item.studied ? <span>{item.description}</span> : <span>{'<не изучено>'}</span>}
