@@ -6,6 +6,8 @@ import {getCharacter} from 'api/index';
 import {Progress} from 'flowbite-react';
 import ParamElement from '/components/character/param';
 import ArmorClass from '/components/character/armor_class';
+import Inspiration from '/components/character/inspiration';
+import MasteryBonus from '/components/character/mastery_bonus';
 import {Tooltip} from 'flowbite-react';
 import {Modifier} from '/services/modifier';
 
@@ -21,6 +23,7 @@ const CharacterPage = () => {
             try {
                 if (id) {
                     const data = await getCharacter(id);
+                    console.log(data);
                     setCharacter(data);
                 }
             } catch (error) {
@@ -132,9 +135,9 @@ const CharacterPage = () => {
                                     <Progress progress={character.character_experience.exp/character.character_experience.exp_next_level*100} color="dark" />
                                     <span className={"text-dark font-medium"}>{character.character_experience.exp}/{character.character_experience.exp_next_level}</span>
                                 </div>
-                                <div className={"flex gap-2"}>
-                                    <div>Бонус мастерства</div>
-                                    <div>{character.character_experience.master_bonus}</div>
+                                <div className={"flex gap-2 items-center"}>
+                                    <MasteryBonus bonus={character.character_experience.master_bonus} />
+                                    <Inspiration hasInspiration={character.info.inspiration}/>
                                 </div>
                             </div>
                         </div>
