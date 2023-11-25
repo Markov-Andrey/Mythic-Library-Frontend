@@ -12,10 +12,11 @@ const Backpack = ({ backpack, weight }) => {
     return (
         <div className="border-2">
             <h2>Рюкзак:</h2>
-            <div className="flex">
+            <div className="flex flex-wrap">
                 {backpack.map((item, index) => (
                     <div key={index}>
                         <Tooltip
+                            trigger="click"
                             content={
                                 <div className="max-w-[500px]">
                                     <h4>{item.title}</h4>
@@ -26,7 +27,7 @@ const Backpack = ({ backpack, weight }) => {
                                     <span className="font-bold">Ценность (Всего): </span>
                                     {item.studied ? <span>{formatValue(item.value, item.quantity)}</span> : <span>???</span>}
                                     <hr />
-                                    <span className="font-bold">Вес (всего): </span>
+                                    <span className="font-bold">Вес (Всего): </span>
                                     <span>{item.weight * item.quantity} фунт</span>
                                     <hr />
                                     <span className="font-bold">Количество: </span>
@@ -34,7 +35,8 @@ const Backpack = ({ backpack, weight }) => {
                                 </div>
                             }
                         >
-                            <div className="relative m-0 border-[1px] border-collapse border-[#999] rounded overflow-hidden">
+                            <Tooltip content={item.title}>
+                            <div className="cursor-pointer relative m-0 border-[1px] border-collapse border-[#999] rounded overflow-hidden">
                                 <Image
                                     width={100}
                                     height={100}
@@ -54,6 +56,7 @@ const Backpack = ({ backpack, weight }) => {
                                     </p>
                                 </div>
                             </div>
+                            </Tooltip>
                         </Tooltip>
                     </div>
                 ))}
