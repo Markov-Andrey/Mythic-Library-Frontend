@@ -18,7 +18,6 @@ const Backpack = ({ backpack, weight }) => {
                         <Tooltip
                             content={
                                 <div className="max-w-[500px]">
-                                    <div>{item.studied}</div>
                                     <h4>{item.title}</h4>
                                     <hr />
                                     <span className="font-bold">Описание: </span>
