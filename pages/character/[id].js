@@ -10,7 +10,9 @@ import MasteryBonus from '/components/character/mastery_bonus';
 import HealthBar from '/components/character/healthbar';
 import ExpBar from '/components/character/exp_bar';
 import Backpack from '/components/character/backpack';
+import Spell from '/components/character/spells';
 import {Tooltip} from 'flowbite-react';
+import {Button} from 'flowbite-react';
 import {Modifier} from '/services/modifier';
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
@@ -19,6 +21,11 @@ const CharacterPage = () => {
     const [character, setCharacter] = useState(null);
     const router = useRouter();
     const { id } = router.query;
+
+    const [activeTab, setActiveTab] = useState('backpack');
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -173,7 +180,39 @@ const CharacterPage = () => {
                             </table>
                         </div>
 
-                        <Backpack backpack={character.backpack} weight={character.weight} />
+                        <div>
+
+                        </div>
+
+                        <div>
+                            <div className={"flex"}>
+                                <div className="tab-container">
+                                    <Button.Group>
+                                        <Button
+                                            color={activeTab === 'backpack' ? 'blue' : 'gray'}
+                                            onClick={() => handleTabClick('backpack')}
+                                        >
+                                            Рюкзак
+                                        </Button>
+                                        <Button
+                                            color={activeTab === 'spells' ? 'blue' : 'gray'}
+                                            onClick={() => handleTabClick('spells')}
+                                        >
+                                            Заклинания
+                                        </Button>
+                                    </Button.Group>
+                                </div>
+                            </div>
+
+
+                            <div className="tab-content">
+                                {activeTab === 'backpack' && (
+                                    <Backpack backpack={character.backpack} weight={character.weight} />
+                                )}
+                                {activeTab === 'spells' && <Spell spells={character.spells} />}
+                            </div>
+                        </div>
+
 
                     </section>
                 </div>
