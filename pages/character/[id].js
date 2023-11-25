@@ -3,12 +3,12 @@ import Image from 'next/image';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 import {getCharacter} from 'api/index';
-import {Progress} from 'flowbite-react';
 import ParamElement from '/components/character/param';
 import ArmorClass from '/components/character/armor_class';
 import Inspiration from '/components/character/inspiration';
 import MasteryBonus from '/components/character/mastery_bonus';
 import HealthBar from '/components/character/healthbar';
+import ExpBar from '/components/character/exp_bar';
 import Backpack from '/components/character/backpack';
 import {Tooltip} from 'flowbite-react';
 import {Modifier} from '/services/modifier';
@@ -94,14 +94,14 @@ const CharacterPage = () => {
                             />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <span className={"flex inline-flex"}>
+                            <div className={"flex inline-flex"}>
                                 <div className={"bold text-2xl"}>
                                     <div className="bg-blue-300 m-1 p-2 rounded-full w-[35px] h-[35px] flex items-center justify-center">
                                         {character.character_experience.level}
                                     </div>
                                 </div>
                                 <h1>{character.info.name}</h1>
-                            </span>
+                            </div>
                             <div className={"flex flex-row gap-2"}>
                                 <ArmorClass className={"w-[50px]"} value={character.armor_class} />
                                 <div className="w-fit flex items-center rounded-full border-2 border-neutral-300 pr-[20px] bg-blue-300 hover:drop-shadow-md transition duration-300 ease-in-out transform hover:scale-105">
@@ -115,19 +115,17 @@ const CharacterPage = () => {
                                     <span className="ml-2">{character.class.name}</span>
                                 </div>
                             </div>
-                            <div className="flex w-full min-w-max">
+                            <div className="flex flex-col w-full min-w-max">
+                                <span className={"font-bold"}>Здоровье</span>
                                 <HealthBar health={character.health} />
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-col">
-                                    <div className="text-base font-bold">EXP</div>
-                                    <Progress progress={character.character_experience.exp/character.character_experience.exp_next_level*100} color="dark" />
-                                    <span className={"text-dark font-medium"}>{character.character_experience.exp}/{character.character_experience.exp_next_level}</span>
-                                </div>
-                                <div className={"flex gap-2 items-center"}>
-                                    <MasteryBonus bonus={character.character_experience.master_bonus} />
-                                    <Inspiration hasInspiration={character.info.inspiration}/>
-                                </div>
+                            <div className="flex flex-col">
+                                <span className={"font-bold"}>Опыт</span>
+                                <ExpBar exp={character.character_experience}/>
+                            </div>
+                            <div className={"flex gap-2 items-center"}>
+                                <MasteryBonus bonus={character.character_experience.master_bonus} />
+                                <Inspiration hasInspiration={character.info.inspiration}/>
                             </div>
                         </div>
                     </section>
