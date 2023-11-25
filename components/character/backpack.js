@@ -61,7 +61,7 @@ const Backpack = ({ backpack, weight }) => {
                                     alt={item.id}
                                     src={item.image ? `${storage}${item.image}` : "/images/mark.svg"}
                                 />
-                                <div className="absolute bottom-0 right-0 bg-blue-300 w-[25px] h-[25px]">
+                                <div className="absolute bottom-0 right-0 bg-blue-300 w-[25px] h-[25px] rounded-tl-lg overflow-hidden">
                                     <p className="flex items-center justify-center font-bold">
                                         {item.quantity}
                                     </p>
