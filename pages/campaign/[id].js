@@ -5,6 +5,7 @@ import {useRouter} from 'next/router';
 import {getCampaign} from 'api/index';
 import CharacterCard from "../../components/main-page/character_card";
 import AddNote from "../../components/campaign/addNote";
+import { Accordion } from 'flowbite-react';
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
 
@@ -79,24 +80,29 @@ const CampaignPage = () => {
                             <AddNote campaignId={campaign.id} onNoteCreated={reload} />
                         </div>
                         <div className="flex flex-wrap">
+                            <Accordion>
                             {campaign.campaign_note.map((item) => (
-                                <div className={"m-2 border-2 flex flex-col gap-1 w-full"}>
-                                    <h3>{item.title}</h3>
-                                    <div className={"font-bold"}>{item.tags}</div>
-                                    <hr/>
-                                    <div>{item.description}</div>
-                                    <hr/>
-                                    <div>
-                                        {new Date(item.created_at).toLocaleString('ru-RU', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric'
-                                        })}
-                                    </div>
-                                </div>
+                                <Accordion.Panel>
+                                    <Accordion.Title>
+                                        <h3 className={"italic"}>{item.tags}</h3>
+                                        <div className={"underline"}>{item.title}</div>
+                                    </Accordion.Title>
+                                    <Accordion.Content>
+                                        <div>{item.description}</div>
+                                        <hr/>
+                                        <div>
+                                            {new Date(item.created_at).toLocaleString('ru-RU', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric'
+                                            })}
+                                        </div>
+                                    </Accordion.Content>
+                                </Accordion.Panel>
                             ))}
+                            </Accordion>
                         </div>
                     </div>
                 </div>
