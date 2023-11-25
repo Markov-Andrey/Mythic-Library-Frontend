@@ -82,15 +82,12 @@ const CampaignPage = () => {
                         <div className="flex flex-wrap">
                             <Accordion>
                             {campaign.campaign_note.map((item) => (
-                                <Accordion.Panel>
-                                    <Accordion.Title>
+                                <Accordion.Panel className={"min-w-500px"}>
+                                    <Accordion.Title className={"min-w-500px"}>
                                         <h3 className={"italic"}>{item.tags}</h3>
-                                        <div className={"underline"}>{item.title}</div>
-                                    </Accordion.Title>
-                                    <Accordion.Content>
-                                        <div>{item.description}</div>
-                                        <hr/>
-                                        <div>
+                                        <div>{item.title}</div>
+                                        <hr className={"border-2 border-[#777]"}/>
+                                        <div className={"text-right text-base"}>
                                             {new Date(item.created_at).toLocaleString('ru-RU', {
                                                 year: 'numeric',
                                                 month: 'long',
@@ -99,6 +96,9 @@ const CampaignPage = () => {
                                                 minute: 'numeric'
                                             })}
                                         </div>
+                                    </Accordion.Title>
+                                    <Accordion.Content>
+                                        <div>{item.description}</div>
                                     </Accordion.Content>
                                 </Accordion.Panel>
                             ))}
