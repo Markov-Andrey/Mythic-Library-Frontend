@@ -39,6 +39,16 @@ const Spell = ({ spells }) => {
                                             <div className="max-w-[500px]">
                                                 <h4>{spellsByLevel[level][cellIndex].title}</h4>
                                                 <hr />
+                                                {spellsByLevel[level][cellIndex] && spellsByLevel[level][cellIndex].properties ? (
+                                                    spellsByLevel[level][cellIndex].properties.map((property, index) => (
+                                                        <div key={index}>
+                                                            <span className="font-bold">{property.title}: </span>
+                                                            <span>{property.value}</span>
+                                                            <hr />
+                                                        </div>
+                                                    ))
+                                                ) : null}
+                                                <hr />
                                                 <span className="font-bold">Описание: </span>
                                                 <span>{spellsByLevel[level][cellIndex].description}</span>
                                                 <hr />
