@@ -46,13 +46,20 @@ const CharacterPage = () => {
         if (!character) return [];
         const param = character.params;
         const mod = character.basic_modifier;
+        const saving_throws = character.saving_throws;
+        const savingMatch = (code) => {
+            if (saving_throws.includes(code)) {
+                return character.character_experience.master_bonus;
+            }
+            return null;
+        };
         return [
-            { label: 'Сила', value: param.strength, modifier: mod.strength },
-            { label: 'Ловкость', value: param.dexterity, modifier: mod.dexterity },
-            { label: 'Телосложение', value: param.constitution, modifier: mod.constitution },
-            { label: 'Интеллект', value: param.intelligence, modifier: mod.intelligence },
-            { label: 'Мудрость', value: param.wisdom, modifier: mod.wisdom },
-            { label: 'Харизма', value: param.charisma, modifier: mod.charisma },
+            { label: 'Сила', value: param.strength, modifier: mod.strength, saving_throws: savingMatch('strength')},
+            { label: 'Ловкость', value: param.dexterity, modifier: mod.dexterity, saving_throws: savingMatch('dexterity')},
+            { label: 'Телосложение', value: param.constitution, modifier: mod.constitution, saving_throws: savingMatch('constitution')},
+            { label: 'Интеллект', value: param.intelligence, modifier: mod.intelligence, saving_throws: savingMatch('intelligence')},
+            { label: 'Мудрость', value: param.wisdom, modifier: mod.wisdom, saving_throws: savingMatch('wisdom')},
+            { label: 'Харизма', value: param.charisma, modifier: mod.charisma, saving_throws: savingMatch('charisma')},
         ];
     };
     const skillsData = () => {
