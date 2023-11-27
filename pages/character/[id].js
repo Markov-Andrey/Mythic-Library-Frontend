@@ -216,7 +216,7 @@ const CharacterPage = () => {
                                 {activeTab === 'backpack' && (
                                     <Backpack backpack={character.backpack} weight={character.weight} />
                                 )}
-                                {activeTab === 'spells' && <Spell spells={character.spells} />}
+                                {activeTab === 'spells' && <Spell spells={character.spells} spell_slots={character.spell_slots} />}
                             </div>
                         </div>
 
