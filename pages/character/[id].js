@@ -78,7 +78,6 @@ const CharacterPage = () => {
             {label: 'Религия', modifier: mod.religion, bonus: bonus.religion},
             {label: 'Уход за животными', modifier: mod.animal_handling, bonus: bonus.animal_handling},
             {label: 'Проницательность', modifier: mod.insight, bonus: bonus.insight},
-            {label: 'Уход за животными', modifier: mod.animal_handling, bonus: bonus.animal_handling},
             {label: 'Медицина', modifier: mod.medicine, bonus: bonus.medicine},
             {label: 'Восприятие', modifier: mod.perception, bonus: bonus.perception},
             {label: 'Выживание', modifier: mod.survival, bonus: bonus.survival},

@@ -51,3 +51,25 @@ h4 {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #808080;
 }
+
+.health-bar {
+  background: linear-gradient(-45deg, #ff6969, #e73c3c, #d52323, #a80808);
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
+}
+.extra-health-bar {
+  background: linear-gradient(-45deg, #26e350, #2bba0f, #40c608, #078e02);
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
+}
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
