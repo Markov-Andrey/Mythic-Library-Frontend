@@ -3,15 +3,14 @@ import React from 'react';
 import Image from 'next/image';
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
-const width = 150;
 
-const CharacterMiniCard = ({ item }) => {
+const CharacterMiniCard = ({ item, width = 150 }) => {
     return (
-        <div className="w-[150px]">
+        <div className={`w-${width}px`}>
             <Image
                 width={width}
                 height={width}
-                style={{ maxHeight: '150px', maxWidth: '150px', objectFit: 'cover' }}
+                style={{ maxHeight: `${width}px`, maxWidth: `${width}px`, objectFit: 'cover' }}
                 alt={item.id ? item.id : 'ico'}
                 src={item.logo ? `${storage}${item.logo}` : '/images/mark.svg'}
                 className="rounded"

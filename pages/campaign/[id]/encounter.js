@@ -53,8 +53,25 @@ const Encounter = () => {
 
     const endRound = () => {
         console.log('Round ended!');
+        setInitiatives(initiatives.map(initiative => ({ ...initiative, initiative: 0 })));
         setRoundNumber(roundNumber + 1);
     };
+
+    const addEnemy = () => {
+        const randomId = Math.floor(Math.random() * 1000000).toString();
+        const uniqueId = `${randomId}_${Date.now()}`;
+        const newEnemy = {
+            id: uniqueId,
+            logo: null,
+            name: `New Enemy ${uniqueId}`,
+            initiative: 0,
+        };
+        charactersWithInitiatives.push(newEnemy);
+        const sortedCharacters = charactersWithInitiatives.slice().sort((a, b) => b.initiative - a.initiative);
+        const filteredCharacters = sortedCharacters.filter(character => character.initiative !== 0);
+        setInitiatives(sortedCharacters);
+        console.log('Enemy added!');
+    }
 
     return (
         <div>
@@ -67,11 +84,16 @@ const Encounter = () => {
                         <h1>{campaign.title}</h1>
                     </div>
                     <div>
-                        <h2>Участники</h2>
+                        <div className={"flex gap-2"}>
+                            <h2>Участники</h2>
+                            <button onClick={addEnemy} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Добавить
+                            </button>
+                        </div>
                         <div className={"grid grid-cols-2 gap-2 mb-[350px]"}>
                             {charactersWithInitiatives.map((character, index) => (
                                 <div key={index} className="flex items-center gap-4">
-                                    <CharacterMiniCard item={character} />
+                                    <CharacterMiniCard item={character} width={100} />
                                     <div className={"flex flex-col"}>
                                         <input
                                             type="number"
@@ -102,16 +124,16 @@ const Encounter = () => {
                                 Следующий раунд
                             </button>
                         </div>
-                        <div className="flex flex-wrap">
+                        <div className="flex overflow-y-auto">
                             {filteredCharacters.map((character, index) => (
                                 <div className="relative p-2">
                                     <div>{character.initiative}</div>
                                     <div onClick={() => endTurn(character.id)} className="absolute top-0 left-0 w-full h-full z-10 rounded-lg">
-                                        <div className="font-bold text-white rounded-lg cursor-pointer w-full h-full transition ease-in-out duration-300 hover:bg-red-500/50 hover:opacity-100 flex items-center justify-center opacity-0">
+                                        <div className="font-bold text-white rounded-lg cursor-pointer w-full h-full transition ease-in-out duration-300 hover:bg-red-500/50 hover:opacity-100 flex items-center justify-center opacity-0" style={{ userSelect: 'none' }}>
                                             Завершить ход
                                         </div>
                                     </div>
-                                    <CharacterMiniCard item={character} />
+                                    <CharacterMiniCard width={150} item={character} />
                                 </div>
                             ))}
                         </div>
