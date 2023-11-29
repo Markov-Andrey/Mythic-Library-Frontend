@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 import {getCampaign} from 'api/index';
-import CharacterCard from "../../components/main-page/character_card";
-import AddNote from "../../components/campaign/addNote";
+import CharacterCard from "/components/main-page/character_card";
+import AddNote from "/components/campaign/addNote";
 import { Accordion } from 'flowbite-react';
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
