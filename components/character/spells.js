@@ -26,23 +26,25 @@ const Spell = ({spells, spell_slots}) => {
 
     return (
         <div>
-            <div className={"m-2"}>
-                <h4>Ячейки заклинаний</h4>
-                <div className="flex items-center">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
-                    spell_slots[`spell_slots_level_${level}`] !== 0 && (
-                        <div key={level} className="flex flex-col items-center">
-                            <p>{level} ур.</p>
-                            <p
-                                className="cursor-pointer border-[1px] border-black flex items-center justify-center w-[20px] h-[20px] rounded-full bg-blue-100"
-                            >
-                                {spell_slots[`spell_slots_level_${level}`]}
-                            </p>
-                        </div>
-                    )
-                ))}
+            {Object.values(spell_slots).some(slot => slot !== null) && (
+                <div className={"m-2"}>
+                    <h4>Ячейки заклинаний</h4>
+                    <div className="flex items-center">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
+                            spell_slots[`spell_slots_level_${level}`] !== 0 && (
+                                <div key={level} className="flex flex-col items-center">
+                                    <p>{level} ур.</p>
+                                    <p
+                                        className="cursor-pointer border-[1px] border-black flex items-center justify-center w-[20px] h-[20px] rounded-full bg-blue-100"
+                                    >
+                                        {spell_slots[`spell_slots_level_${level}`]}
+                                    </p>
+                                </div>
+                            )
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
             <div className="border-2 max-h-[575px] overflow-y-scroll">
                 {Object.keys(spellsByLevel).map((level, index) => (
                     <div key={index}>
