@@ -3,12 +3,21 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { getCampaign } from 'api/index';
 import CharacterMiniCard from "/components/main-page/character_minicard";
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
 
 const Encounter = () => {
-    const [campaign, setCampaign] = useState(null);
-    const [roundNumber, setRoundNumber] = useState(1);
     const router = useRouter();
     const { id } = router.query;
+    const [campaign, setCampaign] = useState(null);
+    const [roundNumber, setRoundNumber] = useState(1);
+
+    const [charactersWithInitiatives, setCharactersWithInitiatives] = useState(null);
+    const [sortedCharacters, setSortedCharacters] = useState(null);
+    const [filteredCharacters, setFilteredCharacters] = useState([]);
+
+    const [generateName, setGenerateName] = useState('A');
+    const [openModal, setOpenModal] = useState(false);
+    const [newEnemyName, setNewEnemyName] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,6 +26,13 @@ const Encounter = () => {
                     const data = await getCampaign(id);
                     setCampaign(data);
                     console.log(data);
+
+                    setCharactersWithInitiatives(
+                        data?.short_info.map((item, index) => ({
+                            ...item,
+                            initiative: (data.initiatives && data.initiatives[index]?.initiative) || 0,
+                        })) || []
+                    );
                 }
             } catch (error) {
                 console.error('Error fetching campaign:', error);
@@ -25,53 +41,71 @@ const Encounter = () => {
         fetchData();
     }, [id]);
 
-    const [initiatives, setInitiatives] = useState([]);
+    useEffect(() => {
+        if (charactersWithInitiatives) {
+            const sorted = charactersWithInitiatives.slice().sort((a, b) => b.initiative - a.initiative);
+            setSortedCharacters(sorted);
+        }
+    }, [charactersWithInitiatives]);
+
+    useEffect(() => {
+        if (sortedCharacters) {
+            const filtered = sortedCharacters.filter(character => character.initiative !== 0);
+            setFilteredCharacters(filtered);
+        }
+    }, [sortedCharacters]);
 
     const handleInitiativeChange = (index, value) => {
-        const updatedInitiatives = [...initiatives];
-        updatedInitiatives[index] = { ...updatedInitiatives[index], initiative: value };
-        setInitiatives(updatedInitiatives);
+        const updatedCharacters = [...charactersWithInitiatives];
+        updatedCharacters[index] = { ...updatedCharacters[index], initiative: parseInt(value, 10) };
+        setCharactersWithInitiatives(updatedCharacters);
     };
 
-    const charactersWithInitiatives = campaign?.short_info.map((item, index) => ({
-        ...item,
-        initiative: initiatives[index]?.initiative || 0,
-    })) || [];
-
-    const sortedCharacters = charactersWithInitiatives.slice().sort((a, b) => b.initiative - a.initiative);
-    const filteredCharacters = sortedCharacters.filter(character => character.initiative !== 0);
-
     const endTurn = (id) => {
-        console.log(initiatives);
+        console.log('Turn ended!');
         const characterIndex = charactersWithInitiatives.findIndex((character) => character.id === id);
         if (characterIndex !== -1) {
-            const updatedInitiatives = [...initiatives];
-            updatedInitiatives[characterIndex] = { ...updatedInitiatives[characterIndex], initiative: 0 };
-            setInitiatives(updatedInitiatives);
+            const updatedCharacters = [...charactersWithInitiatives];
+            updatedCharacters[characterIndex] = { ...updatedCharacters[characterIndex], initiative: 0 };
+            setCharactersWithInitiatives(updatedCharacters);
         }
     };
 
     const endRound = () => {
         console.log('Round ended!');
-        setInitiatives(initiatives.map(initiative => ({ ...initiative, initiative: 0 })));
+        setCharactersWithInitiatives((prevCharacters) =>
+            prevCharacters.map((character) => ({ ...character, initiative: 0 }))
+        );
         setRoundNumber(roundNumber + 1);
     };
 
+    const generateNextName = () => {
+        const nextLetter = String.fromCharCode(generateName.charCodeAt(0) + 1);
+        setGenerateName(nextLetter);
+        return `New Enemy ${generateName}`;
+    };
+
+    const handleNewEnemyNameChange = (e) => {
+        setNewEnemyName(e.target.value);
+    };
+
     const addEnemy = () => {
+        console.log('Enemy added!');
+        const newName = newEnemyName || generateNextName();
+
         const randomId = Math.floor(Math.random() * 1000000).toString();
         const uniqueId = `${randomId}_${Date.now()}`;
+
         const newEnemy = {
             id: uniqueId,
             logo: null,
-            name: `New Enemy ${uniqueId}`,
+            name: newName,
             initiative: 0,
         };
-        charactersWithInitiatives.push(newEnemy);
-        const sortedCharacters = charactersWithInitiatives.slice().sort((a, b) => b.initiative - a.initiative);
-        const filteredCharacters = sortedCharacters.filter(character => character.initiative !== 0);
-        setInitiatives(sortedCharacters);
-        console.log('Enemy added!');
-    }
+
+        setCharactersWithInitiatives((prevState) => [...prevState, newEnemy]);
+        setOpenModal(false);
+    };
 
     return (
         <div>
@@ -86,23 +120,28 @@ const Encounter = () => {
                     <div>
                         <div className={"flex gap-2"}>
                             <h2>Участники</h2>
-                            <button onClick={addEnemy} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button onClick={() => setOpenModal(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Добавить
                             </button>
+
+                            <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
+                                <Modal.Header>Введите имя для нового врага</Modal.Header>
+                                <Modal.Body>
+                                    <input type={"text"} value={newEnemyName} onChange={handleNewEnemyNameChange} />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button onClick={addEnemy}>Добавить врага</Button>
+                                    <Button onClick={() => setOpenModal(false)}>Закрыть</Button>
+                                </Modal.Footer>
+                            </Modal>
+
                         </div>
                         <div className={"grid grid-cols-2 gap-2 mb-[350px]"}>
                             {charactersWithInitiatives.map((character, index) => (
                                 <div key={index} className="flex items-center gap-4">
                                     <CharacterMiniCard item={character} width={100} />
                                     <div className={"flex flex-col"}>
-                                        <input
-                                            type="number"
-                                            placeholder="Инициатива"
-                                            min="0"
-                                            max="30"
-                                            value={character.initiative}
-                                            onChange={(e) => handleInitiativeChange(index, e.target.value)}
-                                        />
+                                        {character.initiative}
                                         <input
                                             type="range"
                                             min="0"
@@ -110,7 +149,7 @@ const Encounter = () => {
                                             value={character.initiative}
                                             step="1"
                                             onChange={(e) => handleInitiativeChange(index, e.target.value)}
-                                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                                            className="bg-gray-200 rounded-lg appearance-none cursor-pointer"
                                         />
                                     </div>
                                 </div>
