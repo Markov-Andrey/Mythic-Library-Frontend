@@ -98,7 +98,7 @@ const CampaignPage = () => {
                                         </div>
                                     </Accordion.Title>
                                     <Accordion.Content>
-                                        <div>{item.description}</div>
+                                        <div dangerouslySetInnerHTML={{ __html: item.description }} />
                                     </Accordion.Content>
                                 </Accordion.Panel>
                             ))}

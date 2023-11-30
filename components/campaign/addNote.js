@@ -1,24 +1,27 @@
-import { Button, Checkbox, Label, Modal, Textarea, TextInput } from 'flowbite-react';
-import { useState } from 'react';
-import {createCampaignNote} from '../../api';
+import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic'; // Import dynamic from 'next/dynamic'
+import { createCampaignNote } from '../../api';
+
+// Load ReactQuill dynamically only on the client side
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
 const AddNote = ({ campaignId, onNoteCreated }) => {
-    console.log('Campaign ID:', campaignId);
     const [openModal, setOpenModal] = useState(false);
+    const [title, setTitle] = useState('');
+    const [tags, setTags] = useState('');
+    const [description, setDescription] = useState('');
+    const [personalNote, setPersonalNote] = useState(false);
 
     const handleButtonClick = async (event) => {
         event.preventDefault();
-        const campaign_id = campaignId;
-        const title = document.getElementById('title').value;
-        const tags = document.getElementById('tags').value;
-        const description = document.getElementById('description').value;
-        const personal_note = document.getElementById('remember').checked;
         const noteData = {
-            campaign_id,
+            campaign_id: campaignId,
             title,
             tags,
             description,
-            personal_note,
+            personal_note: personalNote,
         };
         setOpenModal(false);
         await createCampaignNote(noteData);
@@ -35,22 +38,24 @@ const AddNote = ({ campaignId, onNoteCreated }) => {
                         <div className="flex max-w-md flex-col gap-4">
                             <div>
                                 <div className="mb-2 block">
-                                    <Label htmlFor="title" required value="Название"/>
+                                    <Label htmlFor="title" required value="Название" />
                                 </div>
-                                <TextInput id="title" type="text" required/>
+                                <TextInput id="title" type="text" required value={title} onChange={(e) => setTitle(e.target.value)} />
                                 <div className="mb-2 block">
-                                    <Label htmlFor="tags" value="Теги"/>
+                                    <Label htmlFor="tags" value="Теги" />
                                 </div>
-                                <TextInput id="tags" type="text"/>
+                                <TextInput id="tags" type="text" value={tags} onChange={(e) => setTags(e.target.value)} />
                             </div>
                             <div>
                                 <div className="mb-2 block">
-                                    <Label htmlFor="description" value="Описание"/>
+                                    <Label htmlFor="description" value="Описание" />
                                 </div>
-                                <Textarea id="description" rows={4} />
+                                {typeof window !== 'undefined' &&
+                                <ReactQuill theme="snow" value={description} onChange={(content) => {setDescription(content);}} />
+                                }
                             </div>
                             <div className="flex items-center gap-2">
-                                <Checkbox id="remember"/>
+                                <Checkbox id="remember" checked={personalNote} onChange={() => setPersonalNote(!personalNote)} />
                                 <Label htmlFor="remember">Заметка мастера</Label>
                             </div>
                         </div>
@@ -64,6 +69,6 @@ const AddNote = ({ campaignId, onNoteCreated }) => {
             </Modal>
         </>
     );
-}
+};
 
 export default AddNote;
