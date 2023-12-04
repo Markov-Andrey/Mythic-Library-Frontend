@@ -96,13 +96,6 @@ const Backpack = ({ backpack, weight }) => {
                     </div>
                 ))}
             </div>
-            <div className="border-2 p-1 flex items-center">
-                <Tooltip content={"Вес/макс.вес"}>
-                    <p className="cursor-help">
-                        {weight.backpack}/{weight.carrying} фунтов
-                    </p>
-                </Tooltip>
-            </div>
         </div>
     );
 };

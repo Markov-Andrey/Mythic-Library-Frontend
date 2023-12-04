@@ -14,6 +14,7 @@ import Spell from '/components/character/spells';
 import {Tooltip} from 'flowbite-react';
 import {Button} from 'flowbite-react';
 import {Modifier} from '/services/modifier';
+import WeightDisplay from '/components/character/backpack/weight';
 
 const storage = process.env.NEXT_PUBLIC_BACKEND_STORAGE;
 
@@ -213,9 +214,14 @@ const CharacterPage = () => {
 
                             <div className="tab-content">
                                 {activeTab === 'backpack' && (
-                                    <Backpack backpack={character.backpack} weight={character.weight} />
+                                    <div>
+                                        <Backpack backpack={character.backpack} />
+                                        <WeightDisplay weight={character.weight} />
+                                    </div>
                                 )}
-                                {activeTab === 'spells' && <Spell spells={character.spells} spell_slots={character.spell_slots} />}
+                                {activeTab === 'spells' &&
+                                    <Spell spells={character.spells} spell_slots={character.spell_slots}
+                                />}
                             </div>
                         </div>
 
