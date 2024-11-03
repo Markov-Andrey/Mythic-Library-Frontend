@@ -10,6 +10,6 @@ export default defineNuxtConfig({
     },
   },
   axios: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://mythic-library.com',
   },
 })
