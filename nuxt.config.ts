@@ -1,5 +1,15 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// @ts-ignore
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: true }
+  css: ['~/assets/css/main.css'],
+  devtools: { enabled: true },
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
+  axios: {
+    baseURL: 'http://localhost:3000',
+  },
 })

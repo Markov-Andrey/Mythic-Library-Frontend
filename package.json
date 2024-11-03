@@ -10,13 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "autoprefixer": "^10.4.20",
+    "@nuxtjs/axios": "^5.13.6",
     "daisyui": "^4.12.14",
     "flowbite": "^2.5.2",
     "nuxt": "^3.13.2",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14"
   }
 }
