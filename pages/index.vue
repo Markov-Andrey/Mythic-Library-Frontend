@@ -8,12 +8,12 @@
             <h2 class="text-xl font-semibold mb-4 text-primary">Вход/Регистрация</h2>
 
             <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-gray-700">Имя пользователя</label>
+                <label for="username" class="block text-sm font-medium text-orange-400">Имя пользователя</label>
                 <input type="text" id="username" v-model="username" required class="input input-bordered w-full" placeholder="Введите имя пользователя" />
             </div>
 
             <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+                <label for="password" class="block text-sm font-medium text-orange-400">Пароль</label>
                 <input type="password" id="password" v-model="password" required class="input input-bordered w-full" placeholder="Введите пароль" />
             </div>
 
