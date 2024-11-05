@@ -1,4 +1,12 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "#app": [".nuxt/types/app/index.d.ts"],
+      "#imports": [".nuxt/types/imports.d.ts"],
+      "#components": [".nuxt/types/components.d.ts"]
+    }
+  }
 }
