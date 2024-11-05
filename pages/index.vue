@@ -11,15 +11,16 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "Index",
-    methods: {
-        handleClick() {
-            alert("Скоро здесь будет больше информации!");
-        }
-    }
-}
+<script setup>
+import { useHead } from '@vueuse/head';
+
+useHead({
+    title: 'Добро пожаловать',
+});
+
+const handleClick = () => {
+    alert("Скоро здесь будет больше информации!");
+};
 </script>
 
 <style scoped>

@@ -28,10 +28,15 @@
 import { ref } from 'vue';
 import { api } from '~/composables/api';
 import {useRouter} from "vue-router";
+import {useHead} from "@vueuse/head";
 
 const name = ref('');
 const password = ref('');
 const router = useRouter();
+
+useHead({
+    title: 'Логин',
+});
 
 const handleSubmit = async () => {
     try {
