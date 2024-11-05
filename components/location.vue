@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`locations/${location.id}`" class="w-full">
+    <router-link :to="`location/${location.id}`" class="w-full">
         <div class="group transition-all location-content flex items-center w-full p-2 hover:bg-slate-300 rounded">
             <img v-if="location.image" :src="location.image" alt="location image" class="w-10 h-10 mr-2 rounded-full" />
             <div v-else class="w-10 h-10 mr-2 bg-gray-100 rounded-full"></div>
