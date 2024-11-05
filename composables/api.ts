@@ -14,6 +14,13 @@ interface LoginCredentials {
     password: string;
 }
 
+interface Session {
+    id: number;
+    user_id: number;
+    name: string;
+    description: string;
+}
+
 export const api = {
     async login(credentials: LoginCredentials): Promise<LoginResponse> {
         const config = useRuntimeConfig();
