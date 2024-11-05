@@ -9,7 +9,7 @@
         <div class="text-2xl font-bold">Мои игровые сессии</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
             <div v-for="session in sessions" :key="session.id">
-                <router-link :to="`/session/${session.id}`" class="block border rounded-lg shadow-md p-4 hover:shadow-xl transition">
+                <router-link :to="`/${session.id}`" class="block border rounded-lg shadow-md p-4 hover:shadow-xl transition">
                     <img :src="session.preview" alt="Session Preview" class="w-full h-48 object-cover rounded-md" />
                     <h2 class="text-lg font-semibold mt-2">{{ session.name }}</h2>
                     <p class="text-gray-600">{{ session.description }}</p>
@@ -35,14 +35,8 @@ useHead({
 const sessions = ref([]);
 
 const fetchSessions = async () => {
-    console.log("Fetching sessions...");
+    const token = localStorage.getItem('auth_token');
     try {
-        const token = localStorage.getItem('auth_token');
-
-        if (!token) {
-            throw new Error('No auth token found');
-        }
-
         const config = useRuntimeConfig();
 
         const response = await axios.get(`${config.public.apiBase}/api/sessions`, {
@@ -51,7 +45,7 @@ const fetchSessions = async () => {
             },
         });
 
-        sessions.value = response.data;
+        sessions.value = response.data.original;
 
         console.log("Sessions fetched:", sessions.value);
     } catch (error) {
