@@ -66,6 +66,14 @@ onMounted(() => {
     const id = route.params.session;
     fetchSession(id);
 });
+
+watchEffect(() => {
+    if (session.value?.name) {
+        useHead({
+            title: session.value.name,
+        });
+    }
+});
 </script>
 
 <style scoped>

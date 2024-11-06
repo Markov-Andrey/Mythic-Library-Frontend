@@ -17,6 +17,11 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import Location from '/components/location.vue';
+import {useHead} from "@vueuse/head";
+
+useHead({
+    title: 'Локации',
+});
 
 const locations = ref([]);
 const loading = ref(true);

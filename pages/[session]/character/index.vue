@@ -30,6 +30,11 @@ import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
+import {useHead} from "@vueuse/head";
+
+useHead({
+    title: 'Персонажи',
+});
 
 const characters = ref([]);
 const loading = ref(true);

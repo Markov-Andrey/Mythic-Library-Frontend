@@ -80,6 +80,14 @@ onMounted(() => {
     const locationId = route.params.id;
     fetchLocation(locationId);
 });
+
+watchEffect(() => {
+    if (location.value?.name) {
+        useHead({
+            title: location.value.name,
+        });
+    }
+});
 </script>
 
 <style scoped>

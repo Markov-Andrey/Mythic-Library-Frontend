@@ -160,4 +160,12 @@ onMounted(() => {
     const sessionId = route.params.session;
     fetchLocations(sessionId);
 });
+
+watchEffect(() => {
+    if (character.value?.name) {
+        useHead({
+            title: character.value.name,
+        });
+    }
+});
 </script>
