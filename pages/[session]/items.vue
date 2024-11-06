@@ -18,7 +18,7 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div v-for="item in locations" :key="item.id" class="border rounded-lg shadow p-4">
-                    <img :src="getImageUrl(item.image)" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
+                    <img :src="item.image" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
                     <h2 class="text-lg font-semibold">{{ item.name }}</h2>
                     <p class="text-gray-600">{{ item.description }}</p>
                     <p><strong>Тип:</strong> {{ item.type }}</p>
@@ -93,8 +93,6 @@ const toggleType = async (type) => {
 
     await fetchItems(route.params.session);
 };
-
-const getImageUrl = (imageName) => `${config.public.apiBase}/storage/items/${imageName}`;
 
 onMounted(() => {
     const sessionId = route.params.session;

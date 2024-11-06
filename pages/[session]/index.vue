@@ -40,9 +40,9 @@ const session = ref(null);
 const route = useRoute();
 
 const links = [
-    { name: 'Локации', path: 'locations' },
+    { name: 'Локации', path: 'location' },
     { name: 'Предметы', path: 'items' },
-    { name: 'Персонажи', path: 'characters' },
+    { name: 'Персонажи', path: 'character' },
     { name: 'Способности', path: 'abilities' }
 ];
 

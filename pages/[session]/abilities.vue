@@ -6,7 +6,7 @@
         <div v-else>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div v-for="item in locations" :key="item.id" class="border rounded-lg shadow p-4">
-                    <img v-if="item.image" :src="getImageUrl(item.image)" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
+                    <img v-if="item.image" :src="item.image" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
                     <h2 class="text-lg font-semibold">{{ item.name }}</h2>
                     <p class="text-gray-600">{{ item.description }}</p>
                     <p><strong>Тип:</strong> {{ item.type }}</p>
@@ -52,8 +52,6 @@ const fetchItems = async (id) => {
         loading.value = false;
     }
 };
-
-const getImageUrl = (imageName) => `${config.public.apiBase}/storage/abilities/${imageName}`;
 
 onMounted(() => {
     const sessionId = route.params.session;
