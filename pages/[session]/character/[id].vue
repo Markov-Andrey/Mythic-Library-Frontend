@@ -47,13 +47,30 @@
                         </ul>
                     </div>
                 </div>
-                <div class="grid">
-                    <!-- Inventory Items -->
-                    <div class="mb-8">
-                        <h2 class="text-xl font-semibold mb-4">Инвентарь</h2>
+                <div class="grid h-full">
+                    <!-- Tabs Navigation -->
+                    <div role="tablist" class="tabs tabs-lifted">
+                        <a
+                            role="tab"
+                            class="tab text-xl font-semibold"
+                            :class="{ 'tab-active': activeTab === 'inventory' }"
+                            @click="switchTab('inventory')"
+                        >
+                            Инвентарь
+                        </a>
+                        <a
+                            role="tab"
+                            class="tab text-xl font-semibold"
+                            :class="{ 'tab-active': activeTab === 'abilities' }"
+                            @click="switchTab('abilities')"
+                        >
+                            Способности
+                        </a>
+                    </div>
+
+                    <div v-if="activeTab === 'inventory'" class="mb-8">
                         <div v-for="item in character.inventory_with_items" :key="item.id" class="bg-white rounded-lg shadow-md p-4 mb-4">
                             <div class="flex items-center space-x-4">
-                                <!-- Image -->
                                 <div class="w-16 h-16">
                                     <img
                                         v-if="item.image"
@@ -63,8 +80,6 @@
                                     />
                                     <div v-else class="w-full h-full bg-gray-300 rounded-full"></div>
                                 </div>
-
-                                <!-- Item Details -->
                                 <div class="flex-1">
                                     <h3 class="text-lg font-medium">{{ item.name }}</h3>
                                     <p class="text-sm text-gray-600">{{ item.description }}</p>
@@ -85,10 +100,12 @@
                         </div>
                     </div>
 
-                    <!-- Abilities Details -->
-                    <div class="mb-8">
-                        <h2 class="text-xl font-semibold mb-4">Способности</h2>
-                        <div v-for="ability in character.abilities_with_details" :key="ability.id" class="bg-white rounded-lg shadow-md p-4 mb-4">
+                    <div v-if="activeTab === 'abilities'" class="mb-8">
+                        <div
+                            v-for="ability in character.abilities_with_details"
+                            :key="ability.id"
+                            class="bg-white rounded-lg shadow-md p-4 mb-4"
+                        >
                             <div class="flex items-center space-x-4">
                                 <div class="w-16 h-16">
                                     <img
@@ -140,6 +157,7 @@ const character = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const route = useRoute();
+const activeTab = ref('inventory');
 const config = useRuntimeConfig();
 
 const fetchCharacterData = async (id) => {
@@ -155,6 +173,10 @@ const fetchCharacterData = async (id) => {
         loading.value = false;
     }
 };
+
+function switchTab(tab) {
+    activeTab.value = tab;
+}
 
 onMounted(() => {
     const characterId = route.params.id;
