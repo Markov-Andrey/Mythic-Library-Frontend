@@ -74,10 +74,11 @@
                                     <div class="mt-2 text-sm text-gray-500">
                                         <span class="font-semibold">Количество:</span> {{ item.quantity }}
                                     </div>
-                                    <div class="mt-2 text-sm text-gray-500">
+                                    <div v-if="item.add_properties" class="mt-2 text-sm text-gray-500">
                                         <span class="font-semibold">Дополнительные свойства:</span>
-                                        <span v-if="item.add_properties">{{ item.add_properties }}</span>
-                                        <span v-else>Нет</span>
+                                        <div class="ml-5" v-for="(value, key) in JSON.parse(item.add_properties)" :key="key">
+                                            {{ key }}: {{ value }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +90,6 @@
                         <h2 class="text-xl font-semibold mb-4">Способности</h2>
                         <div v-for="ability in character.abilities_with_details" :key="ability.id" class="bg-white rounded-lg shadow-md p-4 mb-4">
                             <div class="flex items-center space-x-4">
-                                <!-- Image -->
                                 <div class="w-16 h-16">
                                     <img
                                         v-if="ability.image"
@@ -100,25 +100,25 @@
                                     <div v-else class="w-full h-full bg-gray-300 rounded-full"></div>
                                 </div>
 
-                                <!-- Ability Details -->
                                 <div class="flex-1">
                                     <h3 class="text-lg font-medium">{{ ability.name }}</h3>
                                     <p class="text-sm text-gray-600">{{ ability.description }}</p>
                                     <div class="mt-2 text-sm text-gray-500">
                                         <span class="font-semibold">Тип:</span> {{ ability.type }}
                                     </div>
-                                    <div class="mt-2 text-sm text-gray-500">
+
+                                    <div v-if="ability.add_properties && JSON.parse(ability.add_properties).length > 0">
                                         <span class="font-semibold">Дополнительные свойства:</span>
-                                        <span v-if="ability.add_properties">{{ ability.add_properties }}</span>
-                                        <span v-else>Нет</span>
+                                        <div class="ml-5" v-for="(value, key) in JSON.parse(ability.add_properties)" :key="key">
+                                            {{ key }}: {{ value }}
+                                        </div>
                                     </div>
-                                    <div class="mt-2 text-sm text-gray-500">
+
+                                    <div v-if="ability.parameters && Object.keys(ability.parameters).length > 0" class="mt-2 text-sm text-gray-500">
                                         <span class="font-semibold">Параметры:</span>
-                                        <ul>
-                                            <li v-for="(value, key) in ability.parameters" :key="key">
-                                                <strong>{{ key }}:</strong> {{ value }}
-                                            </li>
-                                        </ul>
+                                        <div v-for="(value, key) in ability.parameters" :key="key">
+                                            <strong>{{ key }}:</strong> {{ value }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@ const error = ref(null);
 const route = useRoute();
 const config = useRuntimeConfig();
 
-const fetchLocations = async (id) => {
+const fetchCharacterData = async (id) => {
     const token = localStorage.getItem('auth_token');
     try {
         const response = await axios.get(`${config.public.apiBase}/api/character/${id}`, {
@@ -157,8 +157,8 @@ const fetchLocations = async (id) => {
 };
 
 onMounted(() => {
-    const sessionId = route.params.session;
-    fetchLocations(sessionId);
+    const characterId = route.params.id;
+    fetchCharacterData(characterId);
 });
 
 watchEffect(() => {
