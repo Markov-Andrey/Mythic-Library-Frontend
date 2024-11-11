@@ -47,8 +47,8 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="grid h-full">
-                    <!-- Tabs Navigation -->
                     <div role="tablist" class="tabs tabs-lifted">
                         <a
                             role="tab"
@@ -56,7 +56,7 @@
                             :class="{ 'tab-active': activeTab === 'inventory' }"
                             @click="switchTab('inventory')"
                         >
-                            Инвентарь
+                            Инвентарь ({{ character.inventory_with_items.length }})
                         </a>
                         <a
                             role="tab"
@@ -64,7 +64,7 @@
                             :class="{ 'tab-active': activeTab === 'abilities' }"
                             @click="switchTab('abilities')"
                         >
-                            Способности
+                            Способности ({{ character.abilities_with_details.length }})
                         </a>
                     </div>
 
