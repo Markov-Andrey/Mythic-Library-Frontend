@@ -43,7 +43,8 @@ const links = [
     { name: 'Локации', path: 'location' },
     { name: 'Предметы', path: 'items' },
     { name: 'Персонажи', path: 'character' },
-    { name: 'Способности', path: 'abilities' }
+    { name: 'Способности', path: 'abilities' },
+    { name: 'Заметки', path: 'note' },
 ];
 
 const fetchSession = async (id) => {
