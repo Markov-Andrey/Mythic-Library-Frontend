@@ -4,32 +4,40 @@
         <div v-else-if="error" class="text-red-500">{{ error }}</div>
         <div v-else>
             <div class="flex items-center">
-                <img v-if="location.logo_url" :src="location.logo_url" alt="Location Logo" class="w-36 h-36 rounded mr-4" />
+                <img v-if="organization.logo_url" :src="organization.logo_url" alt="Organization Logo" class="w-36 h-36 rounded mr-4" />
                 <div>
-                    <h1 class="text-2xl font-bold">{{ location.name }}</h1>
-                    <h2 class="text-lg text-gray-600">{{ location.type }}</h2>
+                    <div class="flex gap-2 mt-2 font-bold badge badge-info">
+                        {{ organization.type }}
+                    </div>
+                    <h1 class="text-2xl font-bold">{{ organization.name }}</h1>
+                    <p class="text-sm text-gray-500 mt-2">
+                        <strong>Статус:</strong> {{ organization.status }}
+                    </p>
                 </div>
             </div>
-            <p class="mt-2" v-html="location.description"></p>
-            <div v-if="location.attributes && Object.keys(location.attributes).length" class="mt-4">
-                <h3 class="text-lg font-semibold">Атрибуты:</h3>
+            <hr>
+            <p class="mt-2" v-html="organization.description"></p>
+            <hr>
+            <div v-if="organization.parameters">
+                <h3 class="text-lg font-semibold">Параметры:</h3>
                 <ul class="list-disc pl-5">
-                    <li v-for="(value, key) in location.attributes" :key="key">
+                    <li v-for="(value, key) in organization.parameters" :key="key">
                         <strong>{{ key }}:</strong> {{ value }}
                     </li>
                 </ul>
             </div>
+            <hr>
             <div v-if="currentImage" class="mt-4">
-                <img :src="currentImage" alt="Current Location" class="w-full max-h-[500px] object-contain" />
+                <img :src="currentImage" alt="Current Organization" class="w-full max-h-[500px] object-contain" />
             </div>
-            <div v-if="location.images_urls.length" class="mt-4">
+            <div v-if="organization.images_urls.length" class="mt-4">
                 <div class="mt-2 flex flex-wrap gap-4">
-                    <p v-if="!location.images_urls.length" class="text-gray-500">No images available.</p>
+                    <p v-if="!organization.images_urls.length" class="text-gray-500">No images available.</p>
                     <img v-else
-                         v-for="(image, index) in location.images_urls"
+                         v-for="(image, index) in organization.images_urls"
                          :key="index"
                          :src="image"
-                         alt="Location"
+                         alt="Organization"
                          :class="[
                             'rounded object-cover cursor-pointer',
                             currentImage === image ? 'border-4 border-blue-500' : 'border border-transparent'
@@ -50,24 +58,24 @@ import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import { useHead } from "@vueuse/head";
 
-const location = ref(null);
+const organization = ref(null);
 const loading = ref(true);
 const error = ref(null);
 const route = useRoute();
 const config = useRuntimeConfig();
 const currentImage = ref('');
 
-const fetchLocation = async (id) => {
+const fetchOrganization = async (id) => {
     const token = localStorage.getItem('auth_token');
     try {
         const response = await axios.get(`${config.public.apiBase}/api/organization/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` },
         });
-        location.value = response.data;
-        if (location.value.images_urls) {
-            location.value.images_urls = location.value.images_urls.map(img => img);
+        organization.value = response.data;
+        if (organization.value.images_urls) {
+            organization.value.images_urls = organization.value.images_urls.map(img => img);
         }
-        currentImage.value = location.value.images_urls[0] || '';
+        currentImage.value = organization.value.images_urls[0] || '';
     } catch (err) {
         error.value = 'Ошибка при загрузке данных.';
     } finally {
@@ -80,14 +88,13 @@ const changeMainImage = (image) => {
 };
 
 onMounted(() => {
-    const locationId = route.params.id;
-    fetchLocation(locationId);
+    fetchOrganization(route.params.id);
 });
 
 watchEffect(() => {
-    if (location.value?.name) {
+    if (organization.value?.name) {
         useHead({
-            title: location.value.name,
+            title: organization.value.name,
         });
     }
 });

@@ -5,26 +5,26 @@
         <div v-else-if="error" class="text-red-500">{{ error }}</div>
         <div v-else>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <router-link :to="'organization/' + note.id" v-for="note in notes" :key="note.id" class="border rounded-lg shadow p-4 hover:shadow-xl transition">
+                <router-link :to="'organization/' + organization.id" v-for="organization in organizations" :key="organization.id" class="border rounded-lg shadow p-4 hover:shadow-xl transition">
                     <div class="flex gap-2">
                         <div class="flex justify-center mb-4">
-                            <img :src="note.logo_url" alt="Лого" class="w-24 h-24 object-cover rounded">
+                            <img :src="organization.logo_url" alt="Лого" class="w-24 h-24 object-cover rounded">
                         </div>
                         <div>
                             <div class="flex gap-2 mt-2 font-bold badge badge-info">
-                                {{ note.type }}
+                                {{ organization.type }}
                             </div>
-                            <h2 class="text-2xl font-semibold">{{ note.name }}</h2>
+                            <h2 class="text-2xl font-semibold">{{ organization.name }}</h2>
                         </div>
                     </div>
-                    <p v-if="note.description" class="line-clamp" v-html="note.description"></p>
+                    <p v-if="organization.description" class="line-clamp" v-html="organization.description"></p>
                     <p class="text-sm text-gray-500 mt-2">
-                        <strong>Статус:</strong> {{ note.status }}
+                        <strong>Статус:</strong> {{ organization.status }}
                     </p>
                     <p class="text-sm text-gray-500 mt-2">
-                        <strong>Создано:</strong> {{ new Date(note.created_at).toLocaleString() }}
+                        <strong>Создано:</strong> {{ new Date(organization.created_at).toLocaleString() }}
                         <br>
-                        <strong>Изменено:</strong> {{ new Date(note.updated_at).toLocaleString() }}
+                        <strong>Изменено:</strong> {{ new Date(organization.updated_at).toLocaleString() }}
                     </p>
                 </router-link>
             </div>
@@ -43,7 +43,7 @@ useHead({
     title: 'Организации',
 });
 
-const notes = ref([]);
+const organizations = ref([]);
 const types = ref([]);
 const selectedTypes = ref([]);
 const loading = ref(true);
@@ -51,7 +51,7 @@ const error = ref(null);
 const route = useRoute();
 const config = useRuntimeConfig();
 
-const fetchNotes = async (id) => {
+const fetchOrganization = async (id) => {
     error.value = null;
     loading.value = true;
     try {
@@ -62,7 +62,7 @@ const fetchNotes = async (id) => {
                 Authorization: `Bearer ${localStorage.getItem('auth_token')}`
             }
         });
-        notes.value = data;
+        organizations.value = data;
     } catch (err) {
         error.value = `Ошибка при загрузке даннвыых: ${err.response ? err.response.data.message : err.message}`;
     } finally {
@@ -71,8 +71,7 @@ const fetchNotes = async (id) => {
 };
 
 onMounted(() => {
-    const sessionId = route.params.session;
-    fetchNotes(sessionId);
+    fetchOrganization(route.params.session);
 });
 </script>
 
