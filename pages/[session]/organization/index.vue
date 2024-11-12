@@ -8,13 +8,13 @@
                 <router-link :to="'organization/' + note.id" v-for="note in notes" :key="note.id" class="border rounded-lg shadow p-4 hover:shadow-xl transition">
                     <div class="flex gap-2">
                         <div class="flex justify-center mb-4">
-                            <img :src="note.logo_url" alt="Логотип" class="w-24 h-24 object-cover rounded">
+                            <img :src="note.logo_url" alt="Лого" class="w-24 h-24 object-cover rounded">
                         </div>
                         <div>
-                            <div class="flex gap-2 mt-2 text-gray-600">
+                            <div class="flex gap-2 mt-2 font-bold badge badge-info">
                                 {{ note.type }}
                             </div>
-                            <h2 class="text-lg font-semibold">{{ note.name }}</h2>
+                            <h2 class="text-2xl font-semibold">{{ note.name }}</h2>
                         </div>
                     </div>
                     <p v-if="note.description" class="line-clamp" v-html="note.description"></p>
