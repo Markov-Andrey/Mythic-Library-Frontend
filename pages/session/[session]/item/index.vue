@@ -16,15 +16,21 @@
                     </button>
                 </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 <div v-for="item in locations" :key="item.id">
-                    <router-link :to="'item/' + item.id" class="h-full block border rounded-lg shadow-md p-4 hover:shadow-xl transition">
-                        <img :src="item.image" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
-                        <h2 class="text-lg font-semibold">{{ item.name }}</h2>
-                        <p class="text-gray-600 line-clamp">{{ item.description }}</p>
-                        <p><strong>Тип:</strong> {{ item.type }}</p>
-                        <p><strong>Вес:</strong> {{ item.weight_per_unit }}</p>
-                        <p><strong>Цена:</strong> {{ item.value }}</p>
+                    <router-link
+                        :to="'/item/' + item.id"
+                        class="flex gap-2 h-full block border border-gray-200 rounded-lg shadow-md p-2 hover:shadow-lg transition"
+                    >
+                        <img
+                            :src="item.image"
+                            alt="Item Image"
+                            class="w-12 h-12 object-cover rounded"
+                        />
+                        <div>
+                            <h2 class="text-lg font-semibold">{{ item.name }}</h2>
+                            <p class="text-gray-500">{{ item.type }}</p>
+                        </div>
                     </router-link>
                 </div>
             </div>
