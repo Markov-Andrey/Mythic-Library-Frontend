@@ -41,7 +41,7 @@ const route = useRoute();
 
 const links = [
     { name: 'Локации', path: 'location' },
-    { name: 'Предметы', path: 'items' },
+    { name: 'Предметы', path: 'item' },
     { name: 'Персонажи', path: 'character' },
     { name: 'Способности', path: 'abilities' },
     { name: 'Заметки', path: 'note' },

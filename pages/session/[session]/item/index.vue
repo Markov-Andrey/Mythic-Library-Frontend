@@ -17,19 +17,15 @@
                 </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div v-for="item in locations" :key="item.id" class="border rounded-lg shadow p-4">
-                    <img :src="item.image" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
-                    <h2 class="text-lg font-semibold">{{ item.name }}</h2>
-                    <p class="text-gray-600">{{ item.description }}</p>
-                    <p><strong>Тип:</strong> {{ item.type }}</p>
-                    <p><strong>Вес:</strong> {{ item.weight_per_unit }}</p>
-                    <p><strong>Цена:</strong> {{ item.value }}</p>
-                    <div v-if="item.properties && Object.keys(item.properties).length" class="mt-2">
-                        <h3 class="text-sm font-semibold">Свойства:</h3>
-                        <ul class="list-disc text-sm pl-5">
-                            <li v-for="(value, key) in item.properties" :key="key">{{ key }}: {{ value }}</li>
-                        </ul>
-                    </div>
+                <div v-for="item in locations" :key="item.id">
+                    <router-link :to="'item/' + item.id" class="h-full block border rounded-lg shadow-md p-4 hover:shadow-xl transition">
+                        <img :src="item.image" alt="Item Image" class="w-full h-40 object-cover rounded mb-2" />
+                        <h2 class="text-lg font-semibold">{{ item.name }}</h2>
+                        <p class="text-gray-600 line-clamp">{{ item.description }}</p>
+                        <p><strong>Тип:</strong> {{ item.type }}</p>
+                        <p><strong>Вес:</strong> {{ item.weight_per_unit }}</p>
+                        <p><strong>Цена:</strong> {{ item.value }}</p>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -106,3 +102,13 @@ onMounted(() => {
     fetchItems(sessionId);
 });
 </script>
+
+<style>
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>
