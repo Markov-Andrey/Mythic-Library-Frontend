@@ -4,7 +4,7 @@
         <div v-else-if="error" class="text-red-500">{{ error }}</div>
         <div v-else>
             <div class="flex items-center">
-                <img v-if="location.logo_url" :src="location.logo_url" alt="Location Logo" class="w-24 h-24 rounded mr-4" />
+                <img v-if="location.logo_url" :src="location.logo_url" alt="Location Logo" class="w-36 h-36 rounded mr-4" />
                 <div>
                     <h1 class="text-2xl font-bold">{{ location.name }}</h1>
                     <h2 class="text-lg text-gray-600">{{ location.type }}</h2>
