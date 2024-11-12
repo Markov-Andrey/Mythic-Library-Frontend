@@ -18,7 +18,7 @@
             <router-link
                 v-for="link in links"
                 :key="link.name"
-                :to="`/${session.id}/${link.path}`"
+                :to="`${session.id}/${link.path}`"
                 class="block p-4 border rounded-lg shadow-md bg-white hover:bg-blue-100 transition"
             >
                 <h3 class="text-lg font-bold text-blue-600">{{ link.name }}</h3>
