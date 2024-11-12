@@ -19,7 +19,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 <div v-for="item in locations" :key="item.id">
                     <router-link
-                        :to="'/item/' + item.id"
+                        :to="'item/' + item.id"
                         class="flex gap-2 h-full block border border-gray-200 rounded-lg shadow-md p-2 hover:shadow-lg transition"
                     >
                         <img
