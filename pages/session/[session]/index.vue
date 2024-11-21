@@ -32,9 +32,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { useRuntimeConfig } from '#app';
+import { api, requestWithErrorHandling } from '~/services/api';
 
 const session = ref(null);
 const route = useRoute();
@@ -49,19 +48,8 @@ const links = [
 ];
 
 const fetchSession = async (id) => {
-    const token = localStorage.getItem('auth_token');
-    const config = useRuntimeConfig();
-
-    try {
-        const response = await axios.get(`${config.public.apiBase}/api/session/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-        session.value = response.data.original;
-    } catch (error) {
-        console.error('Ошибка при получении сессии:', error.message);
-    }
+    const response = await requestWithErrorHandling(() => api().get(`/api/session/${id}`));
+    session.value = response.data.original;
 };
 
 onMounted(() => {
