@@ -1,9 +1,9 @@
 // @ts-ignore
-import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 // @ts-ignore
-import {useRuntimeConfig} from '#app';
+import { useRuntimeConfig } from '#app';
 
-const requestWithErrorHandling = async (requestFn: () => Promise<AxiosResponse>) => {
+const request = async (requestFn: () => Promise<AxiosResponse>) => {
     try {
         return await requestFn();
     } catch (error) {
@@ -27,7 +27,6 @@ const api = (): AxiosInstance => {
         (request: AxiosRequestConfig): AxiosRequestConfig => {
             const token = localStorage.getItem('auth_token');
             if (token) request.headers.Authorization = `Bearer ${token}`;
-
             return request;
         },
         (error: AxiosError) => Promise.reject(error)
@@ -44,4 +43,4 @@ const api = (): AxiosInstance => {
     return instance;
 };
 
-export { api, requestWithErrorHandling };
+export { api, request };

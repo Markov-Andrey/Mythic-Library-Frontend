@@ -40,10 +40,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import {useHead} from "@vueuse/head";
+import { api, request } from '~/services/api';
 
 useHead({
     title: 'Предметы',
@@ -60,31 +60,16 @@ const config = useRuntimeConfig();
 
 const fetchItems = async (id) => {
     error.value = null;
-    try {
-        const { data } = await axios.post(`${config.public.apiBase}/api/items/${id}`, {
-            type: selectedTypes.value.join(','),
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
-            }
-        });
-        locations.value = data;
-    } catch (error) {
-        error.value = `Ошибка при загрузке данных: ${error.response ? error.response.data.message : error.message}`;
-    } finally {
-        loading.value = false;
-    }
+    const postData = { type: selectedTypes.value.join(',') };
+    const response = await request(() => api().post(`/api/items/${id}`, postData));
+    locations.value = response.data;
+    loading.value = false;
 };
 
 const fetchTypes = async (id) => {
-    try {
-        const { data } = await axios.get(`${config.public.apiBase}/api/items/${id}/types`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('auth_token')}` },
-        });
-        types.value = data;
-    } catch (error) {
-        error.value = `Ошибка при загрузке типов: ${error.response ? error.response.data.message : error.message}`;
-    }
+    error.value = null;
+    const response = await request(() => api().get(`/api/items/${id}/types`));
+    types.value = response.data;
 };
 
 const toggleType = async (type) => {
@@ -110,11 +95,4 @@ onMounted(() => {
 </script>
 
 <style>
-.line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 </style>

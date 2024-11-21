@@ -25,8 +25,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import {useHead} from "@vueuse/head";
+import { api, request } from '~/services/api';
 
 useHead({
     title: 'Главная',
@@ -35,22 +35,8 @@ useHead({
 const sessions = ref([]);
 
 const fetchSessions = async () => {
-    const token = localStorage.getItem('auth_token');
-    try {
-        const config = useRuntimeConfig();
-
-        const response = await axios.get(`${config.public.apiBase}/api/sessions`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-
-        sessions.value = response.data.original;
-
-        console.log("Sessions fetched:", sessions.value);
-    } catch (error) {
-        console.error('Ошибка при получении сессий:', error.message);
-    }
+    const response = await request(() => api().get(`/api/sessions`));
+    sessions.value = response.data.original;
 };
 
 onMounted(() => {

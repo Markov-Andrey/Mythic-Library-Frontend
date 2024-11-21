@@ -24,10 +24,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import {useHead} from "@vueuse/head";
+import { api, request } from '~/services/api';
 
 useHead({
     title: 'Способности',
@@ -41,21 +41,12 @@ const router = useRouter();
 const config = useRuntimeConfig();
 
 const fetchItems = async (id) => {
+    loading.value = true;
     error.value = null;
-    try {
-        const { data } = await axios.post(`${config.public.apiBase}/api/abilities/${id}`, {
-            type: null,
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
-            }
-        });
-        locations.value = data;
-    } catch (error) {
-        error.value = `Ошибка при загрузке данных: ${error.response ? error.response.data.message : error.message}`;
-    } finally {
-        loading.value = false;
-    }
+    const postData = { type: null };
+    const response = await request(() => api().post(`/api/abilities/${id}`, postData));
+    locations.value = response.data;
+    loading.value = false;
 };
 
 onMounted(() => {
