@@ -43,7 +43,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import {useHead} from "@vueuse/head";
-import { api, request } from '~/services/api';
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Предметы',
@@ -60,15 +60,15 @@ const config = useRuntimeConfig();
 
 const fetchItems = async (id) => {
     error.value = null;
-    const postData = { type: selectedTypes.value.join(',') };
-    const response = await request(() => api().post(`/api/items/${id}`, postData));
+    const data = { type: selectedTypes.value.join(',') };
+    const response = await apiService.items(id, data);
     locations.value = response.data;
     loading.value = false;
 };
 
 const fetchTypes = async (id) => {
     error.value = null;
-    const response = await request(() => api().get(`/api/items/${id}/types`));
+    const response = await apiService.itemType(id);
     types.value = response.data;
 };
 

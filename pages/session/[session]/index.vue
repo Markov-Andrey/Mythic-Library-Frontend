@@ -33,7 +33,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { api, request } from '~/services/api';
+import { apiService } from '~/services/apiService';
 
 const session = ref(null);
 const route = useRoute();
@@ -48,7 +48,7 @@ const links = [
 ];
 
 const fetchSession = async (id) => {
-    const response = await request(() => api().get(`/api/session/${id}`));
+    const response = await apiService.session(id);
     session.value = response.data.original;
 };
 

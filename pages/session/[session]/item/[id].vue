@@ -29,10 +29,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import { useHead } from "@vueuse/head";
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Предметы',
@@ -46,19 +46,9 @@ const router = useRouter();
 const config = useRuntimeConfig();
 
 const fetchItem = async (id) => {
-    const token = localStorage.getItem('auth_token');
-    try {
-        const { data } = await axios.get(`${config.public.apiBase}/api/item/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-        item.value = data;
-    } catch (err) {
-        error.value = `Ошибка при загрузке данных: ${err.response ? err.response.data.message : err.message}`;
-    } finally {
-        loading.value = false;
-    }
+    const response = await apiService.item(id);
+    item.value = response.data;
+    loading.value = false;
 };
 
 watchEffect(() => {

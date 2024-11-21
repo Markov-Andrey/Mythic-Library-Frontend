@@ -149,9 +149,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
+import { apiService } from '~/services/apiService';
 
 const character = ref([]);
 const loading = ref(true);
@@ -161,17 +161,9 @@ const activeTab = ref('inventory');
 const config = useRuntimeConfig();
 
 const fetchCharacterData = async (id) => {
-    const token = localStorage.getItem('auth_token');
-    try {
-        const response = await axios.get(`${config.public.apiBase}/api/character/${id}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-        });
-        character.value = response.data;
-    } catch (err) {
-        error.value = 'Ошибка при загрузке данных.';
-    } finally {
-        loading.value = false;
-    }
+    const response = await apiService.character(id);
+    character.value = response.data;
+    loading.value = false;
 };
 
 function switchTab(tab) {

@@ -27,10 +27,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import {useHead} from "@vueuse/head";
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Персонажи',
@@ -45,20 +45,10 @@ const config = useRuntimeConfig();
 
 const fetchItems = async (id) => {
     error.value = null;
-    try {
-        const { data } = await axios.post(`${config.public.apiBase}/api/characters/${id}`, {
-            type: null,
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
-            }
-        });
-        characters.value = data;
-    } catch (error) {
-        error.value = `Ошибка при загрузке данных: ${error.response ? error.response.data.message : error.message}`;
-    } finally {
-        loading.value = false;
-    }
+    const data = { type: null };
+    const response = await apiService.characters(id, data);
+    characters.value = response.data;
+    loading.value = false;
 };
 
 const getImageUrl = (imageName) => `${config.public.apiBase}/storage/avatars/${imageName}`;

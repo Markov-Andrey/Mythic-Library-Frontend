@@ -27,7 +27,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import {useHead} from "@vueuse/head";
-import { api, request } from '~/services/api';
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Способности',
@@ -43,8 +43,8 @@ const config = useRuntimeConfig();
 const fetchItems = async (id) => {
     loading.value = true;
     error.value = null;
-    const postData = { type: null };
-    const response = await request(() => api().post(`/api/abilities/${id}`, postData));
+    const data = { type: null };
+    const response = await apiService.abilities(id, data);
     locations.value = response.data;
     loading.value = false;
 };

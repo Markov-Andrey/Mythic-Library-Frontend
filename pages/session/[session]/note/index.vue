@@ -30,10 +30,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import { useHead } from "@vueuse/head";
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Заметки',
@@ -49,31 +49,10 @@ const config = useRuntimeConfig();
 
 const fetchNotes = async (id) => {
     error.value = null;
-    loading.value = true;
-    try {
-        const { data } = await axios.post(`${config.public.apiBase}/api/notes/${id}`, {
-            type: selectedTypes.value.join(',')
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
-            }
-        });
-        notes.value = data;
-    } catch (err) {
-        error.value = `Ошибка при загрузке данных: ${err.response ? err.response.data.message : err.message}`;
-    } finally {
-        loading.value = false;
-    }
-};
-
-const toggleType = (type) => {
-    const index = selectedTypes.value.indexOf(type);
-    if (index === -1) {
-        selectedTypes.value.push(type);
-    } else {
-        selectedTypes.value.splice(index, 1);
-    }
-    fetchNotes(route.params.session);
+    const data = { type: selectedTypes.value.join(',') };
+    const response = await apiService.notes(id, data);
+    notes.value = response.data;
+    loading.value = false;
 };
 
 onMounted(() => {

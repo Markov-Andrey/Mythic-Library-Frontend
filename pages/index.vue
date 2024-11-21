@@ -26,7 +26,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import {useHead} from "@vueuse/head";
-import { api, request } from '~/services/api';
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Главная',
@@ -35,7 +35,7 @@ useHead({
 const sessions = ref([]);
 
 const fetchSessions = async () => {
-    const response = await request(() => api().get(`/api/sessions`));
+    const response = await apiService.sessions();
     sessions.value = response.data.original;
 };
 
