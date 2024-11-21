@@ -31,9 +31,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
+import { apiService } from '~/services/apiService';
 
 const note = ref(null);
 const loading = ref(true);
@@ -42,17 +42,9 @@ const route = useRoute();
 const config = useRuntimeConfig();
 
 const fetchNote = async (id) => {
-    const token = localStorage.getItem('auth_token');
-    try {
-        const response = await axios.get(`${config.public.apiBase}/api/note/${id}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-        });
-        note.value = response.data;
-    } catch (err) {
-        error.value = 'Ошибка при загрузке данных.';
-    } finally {
-        loading.value = false;
-    }
+    const response = await apiService.note(id);
+    note.value = response.data;
+    loading.value = false;
 };
 
 onMounted(() => {

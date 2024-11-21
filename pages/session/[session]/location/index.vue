@@ -13,11 +13,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import Location from '/components/location.vue';
 import {useHead} from "@vueuse/head";
+import { apiService } from '~/services/apiService';
 
 useHead({
     title: 'Локации',
@@ -30,17 +30,10 @@ const route = useRoute();
 const config = useRuntimeConfig();
 
 const fetchLocations = async (id) => {
-    const token = localStorage.getItem('auth_token');
-    try {
-        const response = await axios.get(`${config.public.apiBase}/api/locations/${id}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-        });
-        locations.value = response.data;
-    } catch (err) {
-        error.value = 'Ошибка при загрузке данных.';
-    } finally {
-        loading.value = false;
-    }
+    error.value = null;
+    const response = await apiService.locations(id);
+    locations.value = response.data;
+    loading.value = false;
 };
 
 onMounted(() => {

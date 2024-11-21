@@ -53,10 +53,10 @@
 
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useRuntimeConfig } from '#app';
 import { useHead } from "@vueuse/head";
+import { apiService } from '~/services/apiService';
 
 const organization = ref(null);
 const loading = ref(true);
@@ -66,21 +66,13 @@ const config = useRuntimeConfig();
 const currentImage = ref('');
 
 const fetchOrganization = async (id) => {
-    const token = localStorage.getItem('auth_token');
-    try {
-        const response = await axios.get(`${config.public.apiBase}/api/organization/${id}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-        });
-        organization.value = response.data;
-        if (organization.value.images_urls) {
-            organization.value.images_urls = organization.value.images_urls.map(img => img);
-        }
-        currentImage.value = organization.value.images_urls[0] || '';
-    } catch (err) {
-        error.value = 'Ошибка при загрузке данных.';
-    } finally {
-        loading.value = false;
+    const response = await apiService.organization(id);
+    organization.value = response.data;
+    if (organization.value.images_urls) {
+        organization.value.images_urls = organization.value.images_urls.map(img => img);
     }
+    currentImage.value = organization.value.images_urls[0] || '';
+    loading.value = false;
 };
 
 const changeMainImage = (image) => {
