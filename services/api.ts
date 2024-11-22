@@ -3,17 +3,19 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 // @ts-ignore
 import { useRuntimeConfig } from '#app';
 
-const request = async (requestFn: () => Promise<AxiosResponse>) => {
+const request = async (
+    requestFn: () => Promise<AxiosResponse>
+): Promise<AxiosResponse> => {
     try {
         return await requestFn();
     } catch (error) {
         // @ts-ignore
-        console.error('Ошибка при запросе:', error.response?.data?.message || error.message);
+        console.error(error.response?.data?.message || error.message);
         throw error;
     }
 };
 
-const api = (): AxiosInstance => {
+const api = (useToken: boolean = false): AxiosInstance => {
     const config = useRuntimeConfig();
 
     const instance = axios.create({
@@ -25,8 +27,10 @@ const api = (): AxiosInstance => {
 
     instance.interceptors.request.use(
         (request: AxiosRequestConfig): AxiosRequestConfig => {
-            const token = localStorage.getItem('auth_token');
-            if (token) request.headers.Authorization = `Bearer ${token}`;
+            const authToken = localStorage.getItem('auth_token');
+            if (useToken && authToken) {
+                request.headers.Authorization = `Bearer ${authToken}`;
+            }
             return request;
         },
         (error: AxiosError) => Promise.reject(error)
@@ -35,7 +39,7 @@ const api = (): AxiosInstance => {
     instance.interceptors.response.use(
         (response: AxiosResponse) => response,
         (error: AxiosError) => {
-            console.error('Ошибка API:', error.response?.data?.message || error.message);
+            console.error(error.response?.data?.message || error.message);
             return Promise.reject(error);
         }
     );
