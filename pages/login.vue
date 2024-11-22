@@ -40,9 +40,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import { api } from '~/composables/api';
 import { useRouter } from "vue-router";
 import { useHead } from "@vueuse/head";
+import { apiService } from '~/services/apiService';
 
 const login = ref({ name: '', password: '' });
 const router = useRouter();
@@ -52,7 +52,7 @@ useHead({
 });
 
 const fetchLogin = async () => {
-    const response = await api.login(login.value);
+    const response = await apiService.login(login.value);
     localStorage.setItem('auth_token', response.token);
     await router.push('/');
     login.value = { name: '', password: '' };
